@@ -1,48 +1,40 @@
 # Business Calculator Pro
 
-A modern business utility platform designed for fast calculations, GST compliance, transaction tracking, and audit history management.
-
-## Overview
-
-Business Calculator Pro is a lightweight web application that combines standard mathematical calculations with GST tax computation and historical record management. The project is designed with a clean user interface, responsive design principles, and a structured backend architecture.
+A full-stack business utility application built using **FastAPI**, **SQLite**, and **Vanilla JavaScript**. The project provides standard calculations, GST calculations, history tracking, and dashboard analytics through a modern responsive interface.
 
 ## Features
 
 ### Standard Calculator
 
-* Basic arithmetic operations
-* Decimal and percentage calculations
-* Real-time computation
-* Calculation history tracking
+* Perform arithmetic calculations
+* Store calculation history
+* Delete individual records
+* Clear complete history
 
 ### GST Calculator
 
-* Exclusive GST calculation
-* Inclusive GST calculation
-* CGST / SGST breakdown
-* IGST calculation support
-* Invoice value computation
+* Calculate GST-inclusive and GST-exclusive values
+* Support for different GST rates
+* Store GST calculation history
+* Delete individual GST records
+* Clear GST history
 
 ### Dashboard Analytics
 
-* Total calculation statistics
-* GST transaction summaries
-* Recent activity monitoring
-* Quick access tools
+* Total calculation count
+* Total GST calculation count
+* Recent calculation activity
+* Latest GST records
+* Business insights overview
 
-### History Management
+### REST API
 
-* Calculator history ledger
-* GST invoice history
-* Individual record deletion
-* Complete history clearing
+* FastAPI-powered backend
+* Interactive Swagger documentation
+* JSON-based API responses
+* Modular route architecture
 
-### User Experience
-
-* Light Theme
-* Dark Theme
-* Responsive Design
-* Glassmorphism-inspired UI
+---
 
 ## Technology Stack
 
@@ -50,72 +42,201 @@ Business Calculator Pro is a lightweight web application that combines standard 
 
 * HTML5
 * CSS3
-* JavaScript (Vanilla JS)
+* JavaScript 
 
-### Backend Architecture
+
+### Backend
 
 * FastAPI
+* Pydantic
 * SQLAlchemy
+
+### Database
+
 * SQLite
 
 ### Development Tools
 
-* Python
-* Node.js
-* Git & GitHub
+* Git
+* GitHub
 
-## Project Structure
+
+---
+
+## Project Architecture
 
 ```text
-frontend/
-├── assets/
-│   ├── css/
-│   └── js/
-├── index.html
-
-database-schema.sql
-README.md
+business-calculator/
+│
+├── backend/
+│   ├── main.py
+│   └── app/
+│       ├── database.py
+│       ├── models/
+│       ├── routes/
+│       ├── schemas/
+│       └── services/
+│
+├── frontend/
+│   ├── assets/
+│   │   ├── css/
+│   │   └── js/
+│   └── index.html
+│
+├── requirements.txt
+├── package.json
+├── package-lock.json
+├── database-schema.sql
+└── README.md
 ```
+
+---
+
+## API Endpoints
+
+### Calculator APIs
+
+| Method | Endpoint                          |
+| ------ | --------------------------------- |
+| GET    | `/api/v1/calculator/history`      |
+| POST   | `/api/v1/calculator/history`      |
+| DELETE | `/api/v1/calculator/history`      |
+| DELETE | `/api/v1/calculator/history/{id}` |
+
+### GST APIs
+
+| Method | Endpoint                   |
+| ------ | -------------------------- |
+| GET    | `/api/v1/gst/history`      |
+| POST   | `/api/v1/gst/history`      |
+| DELETE | `/api/v1/gst/history`      |
+| DELETE | `/api/v1/gst/history/{id}` |
+
+### Dashboard APIs
+
+| Method | Endpoint                  |
+| ------ | ------------------------- |
+| GET    | `/api/v1/dashboard/stats` |
+
+### System APIs
+
+| Method | Endpoint  |
+| ------ | --------- |
+| GET    | `/health` |
+
+---
 
 ## Installation
 
-1. Clone the repository
+### Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/janani0818-jan/business-calculator.git
+cd business-calculator
 ```
 
-2. Open the frontend folder
+### Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Activate Environment
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Linux / macOS:
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Run Backend
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger Documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Run Frontend
+
+Navigate to frontend folder:
 
 ```bash
 cd frontend
 ```
 
-3. Start a local server
+Start local server:
 
 ```bash
-py -m http.server 5500
+python -m http.server 5500
 ```
 
-4. Open your browser
+Frontend URL:
 
 ```text
-http://localhost:5500
+http://127.0.0.1:5500
 ```
 
-## Current Status
+---
 
-Project Progress: 75%
+## Database
 
-Implemented:
+The project uses SQLite for lightweight local storage.
 
-* Frontend Interface
-* Calculator Module
-* GST Module
-* Dashboard Module
-* Theme Management
-* Database Schema Design
+Main tables:
+
+* Calculator History
+* GST History
+
+Database schema reference:
+
+```text
+database-schema.sql
+```
+
+---
+
+## Future Improvements
+
+* User Authentication
+* Export Reports (PDF/Excel)
+* PostgreSQL Support
+* Docker Deployment
+* Cloud Hosting
+* Advanced Analytics Dashboard
+* Multi-user Support
+
+---
 
 ## Author
 
-Developed as a full-stack business utility application focused on simplicity, performance, and scalability.
+Developed as a full-stack business utility application using FastAPI and modern web technologies.
+
+GitHub Repository:
+https://github.com/janani0818-jan/business-calculator
