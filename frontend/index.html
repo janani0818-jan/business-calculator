@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Calculator Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="theme-light bg-app text-primary min-h-screen font-sans">
+    <div class="app-container" id="app">
+        <aside class="sidebar glass" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <i data-lucide="calculator" class="brand-icon"></i>
+                    </div>
+                    <span class="brand-name">BizCalc<span class="text-accent">Pro</span></span>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#calculator" class="nav-item" data-page="calculator" id="nav-calculator">
+                    <i data-lucide="calculator"></i>
+                    <span>Calculator</span>
+                </a>
+                <a href="#gst" class="nav-item" data-page="gst" id="nav-gst">
+                    <i data-lucide="percent"></i>
+                    <span>GST Calculator</span>
+                </a>
+                <a href="#history" class="nav-item" data-page="history" id="nav-history">
+                    <i data-lucide="history"></i>
+                    <span>History Logs</span>
+                </a>
+                <a href="#settings" class="nav-item" data-page="settings" id="nav-settings">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="theme-toggle-container">
+                    <button id="themeToggleBtn" class="bttn bttn-ghost w-full justify-start text-muted-foreground gap-2">
+                        <i data-lucide="sun" id="themeIconSun" class="icon-spin"></i>
+                        <i data-lucide="moon" id="themeIconMoon" class="hidden icon-spin"></i>
+                        <span id="themeText">Light Theme</span>
+                    </button>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">VP</div>
+                    <div class="profile-info">
+                        <span class="user-email">victoria0809...</span>
+                        <span class="user-role">Biz Member</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="app-header glass">
+                <button class="mobile-toggle bttn bttn-icon" id="mobileMenuBtn">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="header-title-container">
+                    <h1 class="header-heading font-display" id="pageTitleHeading">Dashboard Overview</h1>
+                    <p class="header-subheading text-muted" id="pageSubHeading">Real-time metrics and calculation quick-starts.</p>
+                </div>
+                <div class="header-actions">
+                    <div id="liveClock" class="live-clock font-mono">--:--:--</div>
+                </div>
+            </header>
+
+            <div class="content-body" id="pageContainer">
+                <section id="page-dashboard" class="page-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card glass shadow-sm" id="statCalcCountCard">
+                            <div class="stat-icon-wrapper calc-bg">
+                                <i data-lucide="hash"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-label">Total Math Ops</span>
+                                <h3 class="stat-value" id="dashboardTotalCalculations">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card glass shadow-sm" id="statGstCountCard">
+                            <div class="stat-icon-wrapper gst-bg">
+                                <i data-lucide="dollar-sign"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-label">GST Filings Run</span>
+                                <h3 class="stat-value" id="dashboardTotalGst">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card glass shadow-sm" id="statLatestCalcCard">
+                            <div class="stat-icon-wrapper latest-calc-bg">
+                                <i data-lucide="trending-up"></i>
+                            </div>
+                            <div class="stat-details truncate-parent">
+                                <span class="stat-label">Last Calculation</span>
+                                <h4 class="stat-expr truncate" id="dashboardLatestCalcExpr">None</h4>
+                                <h3 class="stat-value text-accent font-mono truncate" id="dashboardLatestCalcRes">-</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card glass shadow-sm" id="statLatestGstCard">
+                            <div class="stat-icon-wrapper latest-gst-bg">
+                                <i data-lucide="file-text"></i>
+                            </div>
+                            <div class="stat-details truncate-parent">
+                                <span class="stat-label">Last GST Grand Total</span>
+                                <h4 class="stat-expr truncate" id="dashboardLatestGstFormula">None</h4>
+                                <h3 class="stat-value text-accent font-mono truncate" id="dashboardLatestGstRes">₹0.00</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-split-grid mt-6">
+                        <div class="dashboard-activity-panel glass card-padding max-w-full">
+                            <div class="panel-header mb-4">
+                                <h3 class="panel-title font-display">Recent Activity</h3>
+                                <p class="panel-sub">Immediate breakdown of your latest transactions and formulas</p>
+                            </div>
+                            <div class="tabs-container mb-4">
+                                <button class="tab-btn active" id="tab-recent-calc">Standard Math (Latest 5)</button>
+                                <button class="tab-btn" id="tab-recent-gst">GST Invoices (Latest 5)</button>
+                            </div>
+                            <div class="activity-list-container active" id="list-calc-container">
+                                <div class="empty-state" id="calc-empty-state">
+                                    <i data-lucide="info" class="empty-icon text-muted"></i>
+                                    <p>No mathematics history detected. Start typing calculations!</p>
+                                </div>
+                                <div class="activity-timeline" id="dashboardCalcList">
+                                </div>
+                            </div>
+                            <div class="activity-list-container" id="list-gst-container">
+                                <div class="empty-state" id="gst-empty-state">
+                                    <i data-lucide="file-warning" class="empty-icon text-muted"></i>
+                                    <p>No GST calculations filed. Compute taxes to populate!</p>
+                                </div>
+                                <div class="activity-timeline" id="dashboardGstList">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-actions-panel flex flex-col gap-6">
+                            <div class="glass card-padding">
+                                <h3 class="panel-title font-display mb-4">Quick Actions</h3>
+                                <div class="quick-actions-list">
+                                    <button class="action-card-btn text-left p-3 rounded-lg border border-divider hover-bg flex items-center gap-3 w-full" onclick="navigateToPage('calculator')">
+                                        <div class="action-icon action-blue"><i data-lucide="calculator"></i></div>
+                                        <div>
+                                            <h4 class="action-name font-medium">Standard Calculator</h4>
+                                            <p class="action-desc text-muted text-xs">Run standard additions, splits, and custom decimal math.</p>
+                                        </div>
+                                    </button>
+                                    <button class="action-card-btn text-left p-3 rounded-lg border border-divider hover-bg flex items-center gap-3 w-full mt-3" onclick="navigateToPage('gst')">
+                                        <div class="action-icon action-green"><i data-lucide="percent"></i></div>
+                                        <div>
+                                            <h4 class="action-name font-medium">GST Tax Calculator</h4>
+                                            <p class="action-desc text-muted text-xs">Configure CGST, SGST, / IGST inclusive & exclusive invoices.</p>
+                                        </div>
+                                    </button>
+                                    <button class="action-card-btn text-left p-3 rounded-lg border border-divider hover-bg flex items-center gap-3 w-full mt-3" onclick="navigateToPage('history')">
+                                        <div class="action-icon action-yellow"><i data-lucide="history"></i></div>
+                                        <div>
+                                            <h4 class="action-name font-medium">Review Complete History</h4>
+                                            <p class="action-desc text-muted text-xs">Browse complete historical ledgers, audit trails, and wipe logs.</p>
+                                        </div>
+                                    </button>
+                                    <button class="action-card-btn text-left p-3 rounded-lg border border-divider hover-bg flex items-center gap-3 w-full mt-3" id="quickThemeToggle">
+                                        <div class="action-icon action-purple"><i data-lucide="moon-star"></i></div>
+                                        <div>
+                                            <h4 class="action-name font-medium">Switch Contrast Mode</h4>
+                                            <p class="action-desc text-muted text-xs">Toggle between Light aesthetic and Dark high-contrast twilight skin.</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="glass card-padding bg-gradient-premium text-white relative overflow-hidden">
+                                <div class="sparkle-glow"></div>
+                                <h3 class="panel-title font-display text-white mb-2">SaaS Tax Cheat Sheet</h3>
+                                <p class="text-xs text-secondary-white mb-4">Quick formula breakdowns supported by this professional platform:</p>
+                                <ul class="cheat-list text-xs flex flex-col gap-2">
+                                    <li><strong>Exclusive GST</strong>: Total = Amount + (Amount * Rate / 100)</li>
+                                    <li><strong>Inclusive GST</strong>: Taxable Value = Total * 100 / (100 + Rate)</li>
+                                    <li><strong>Regional CGST/SGST</strong>: Shared local tax split 50/50</li>
+                                    <li><strong>Inter-state IGST</strong>: Combined single taxing corridor</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="page-calculator" class="page-section">
+                    <div class="calculator-layout-split">
+                        <div class="calculator-machine glass p-6 rounded-2xl shadow-lg border border-divider">
+                            <div class="calc-top-header mb-4 flex justify-between items-center">
+                                <span class="badge calc-badge">Mathematical Processing Unit</span>
+                                <div class="calc-status flex items-center gap-1.5 text-xs text-muted-foreground">
+                                    <span class="pulse-dot"></span>
+                                    <span>Active CPU Mode</span>
+                                </div>
+                            </div>
+                            <div class="calc-screen mb-5">
+                                <div class="screen-expr font-mono text-right" id="calcHistoryExpr"></div>
+                                <input type="text" class="screen-input font-mono text-right font-semibold" id="calcDisplay" value="0" readonly>
+                            </div>
+                          
+                            <div class="calc-keyboard-grid">
+                               
+                                <button class="calc-key bttn-calc bttn-danger" id="btn-clear" title="Clear All (C)">C</button>
+                                <button class="calc-key bttn-calc bttn-secondary" id="btn-backspace" title="Backspace (Backspace)">⌫</button>
+                                <button class="calc-key bttn-calc bttn-secondary" id="btn-percent" title="Percentage (%)">%</button>
+                                <button class="calc-key bttn-calc bttn-operator" id="btn-divide" title="Divide (/)">÷</button>
+                                
+                                <button class="calc-key bttn-calc num" id="btn-7">7</button>
+                                <button class="calc-key bttn-calc num" id="btn-8">8</button>
+                                <button class="calc-key bttn-calc num" id="btn-9">9</button>
+                                <button class="calc-key bttn-calc bttn-operator" id="btn-multiply" title="Multiply (*)">×</button>
+                               
+                                <button class="calc-key bttn-calc num" id="btn-4">4</button>
+                                <button class="calc-key bttn-calc num" id="btn-5">5</button>
+                                <button class="calc-key bttn-calc num" id="btn-6">6</button>
+                                <button class="calc-key bttn-calc bttn-operator" id="btn-subtract" title="Subtract (-)">-</button>
+                               
+                                <button class="calc-key bttn-calc num" id="btn-1">1</button>
+                                <button class="calc-key bttn-calc num" id="btn-2">2</button>
+                                <button class="calc-key bttn-calc num" id="btn-3">3</button>
+                                <button class="calc-key bttn-calc bttn-operator" id="btn-add" title="Add (+)">+</button>
+                               
+                                <button class="calc-key bttn-calc num col-span-2" id="btn-0">0</button>
+                                <button class="calc-key bttn-calc num" id="btn-decimal">.</button>
+                                <button class="calc-key bttn-calc bttn-accent" id="btn-equals" title="Equals (Enter)">=</button>
+                            </div>
+                            <div class="calc-footer-help text-center text-xs text-muted-foreground mt-4">
+                                <i data-lucide="keyboard" class="inline w-3.5 h-3.5 mr-1 align-middle"></i>
+                                <span class="align-middle">Supports numeric keyboard input, backspace, and brackets.</span>
+                            </div>
+                        </div>
+                        <div class="calc-logs-sidebar flex flex-col gap-4 max-w-full">
+                            <div class="glass card-padding h-full flex flex-col">
+                                <div class="panel-header mb-3 flex justify-between items-center">
+                                    <h3 class="panel-title font-display">Session Ledger</h3>
+                                    <button class="bttn bttn-xs bttn-danger" id="btnClearCalcHistory">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear All
+                                    </button>
+                                </div>
+                                <div class="calc-session-list flex-1 overflow-y-auto pr-1" id="calcHistoryList">
+                                    <!-- Dynamic elements -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GST CALCULATOR PAGE  -->
+                <section id="page-gst" class="page-section">
+                    <div class="gst-layout-grid">
+                        <!-- GST  Inputs -->
+                        <div class="glass card-padding">
+                            <div class="panel-header mb-4">
+                                <span class="badge gst-badge">Invoice Master</span>
+                                <h3 class="panel-title font-display mt-1">Tax Configuration parameters</h3>
+                                <p class="panel-sub">Calculate GST inclusive/exclusive rates easily.</p>
+                            </div>
+
+                            <form id="gstForm" class="gst-form flex flex-col gap-4" onsubmit="event.preventDefault(); submitGstCalculation();">
+                                <!--Amount Input -->
+                                <div class="form-group">
+                                    <label for="gstAmountInput" class="form-label">Base/Transaction Amount (₹)</label>
+                                    <div class="input-relative">
+                                        <span class="input-symbol font-sans">₹</span>
+                                        <input type="number" id="gstAmountInput" name="amount" min="1" step="any" placeholder="0.00" class="form-input flex-1 font-mono font-semibold" required>
+                                    </div>
+                                    <div class="input-helper mt-1 text-xs text-muted">Enter any transaction amount greater than zero.</div>
+                                </div>
+
+                                <!-- Standard GST Rate Quick Buttons -->
+                                <div class="form-group">
+                                    <label class="form-label">Select Standard GST Slab Rate</label>
+                                    <div class="quick-rates-grid">
+                                        <button type="button" class="gst-rate-btn text-xs font-mono font-semibold" data-rate="5">5%</button>
+                                        <button type="button" class="gst-rate-btn text-xs font-mono font-semibold" data-rate="12">12%</button>
+                                        <button type="button" class="gst-rate-btn text-xs font-mono font-semibold active" data-rate="18">18%</button>
+                                        <button type="button" class="gst-rate-btn text-xs font-mono font-semibold" data-rate="28">28%</button>
+                                    </div>
+                                </div>
+
+                                <!-- Custom GST rate -->
+                                <div class="form-group">
+                                    <label for="gstRateInput" class="form-label">Custom GST Rate (%)</label>
+                                    <div class="input-relative">
+                                        <input type="number" id="gstRateInput" name="gst_rate" min="0" max="100" step="0.01" value="18" class="form-input font-mono">
+                                        <span class="input-symbol-right font-mono">%</span>
+                                    </div>
+                                </div>
+
+                                <!-- Inclusive / Exclusive -->
+                                <div class="form-group">
+                                    <label class="form-label">GST Calculation Type</label>
+                                    <div class="calc-type-selector flex gap-3">
+                                        <label class="toggle-card flex-1 glass text-center cursor-pointer p-3 border rounded-xl border-divider flex flex-col justify-center items-center gap-1 active">
+                                            <input type="radio" name="gst_inclusive_exclusive" value="EXCLUSIVE" class="hidden-radio" checked>
+                                            <span class="checker-label font-semibold">GST Exclusive</span>
+                                            <span class="checker-info text-muted text-2xs">Adds taxes on top of amount</span>
+                                        </label>
+                                        <label class="toggle-card flex-1 glass text-center cursor-pointer p-3 border rounded-xl border-divider flex flex-col justify-center items-center gap-1">
+                                            <input type="radio" name="gst_inclusive_exclusive" value="INCLUSIVE" class="hidden-radio">
+                                            <span class="checker-label font-semibold">GST Inclusive</span>
+                                            <span class="checker-info text-muted text-2xs">Extracts taxes from total</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- CGST/SGST/IGST choices -->
+                                <div class="form-group">
+                                    <label class="form-label">GST Tax Model Integration</label>
+                                    <div class="tax-model-selector flex gap-3">
+                                        <label class="toggle-card flex-1 glass text-center cursor-pointer p-3 border rounded-xl border-divider flex flex-col justify-center items-center gap-1 active">
+                                            <input type="radio" name="gst_type" value="CGST_SGST" class="hidden-radio" checked>
+                                            <span class="checker-label font-semibold">Intra-State Split</span>
+                                            <span class="checker-info text-muted text-2xs">CGST + SGST Breakdown</span>
+                                        </label>
+                                        <label class="toggle-card flex-1 glass text-center cursor-pointer p-3 border rounded-xl border-divider flex flex-col justify-center items-center gap-1">
+                                            <input type="radio" name="gst_type" value="IGST" class="hidden-radio">
+                                            <span class="checker-label font-semibold">Inter-State Combined</span>
+                                            <span class="checker-info text-muted text-2xs">Single IGST Corridor</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="gst-actions mt-2">
+                                    <button type="submit" class="bttn bttn-accent w-full font-semibold gap-2 py-3 justify-center">
+                                        <i data-lucide="percent-diamond"></i> Compute GST Breakdown & Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- GST DisplayOutcome -->
+                        <div class="glass card-padding flex flex-col justify-between">
+                            <div>
+                                <div class="panel-header mb-4">
+                                    <span class="badge result-badge">Audit Report</span>
+                                    <h3 class="panel-title font-display mt-1">Tax Audit Breakdown</h3>
+                                    <p class="panel-sub">Itemized summary generated from requested configuration</p>
+                                </div>
+
+                                <div class="audit-card glass p-5 rounded-2xl mb-6">
+                                    <div class="audit-row justify-between flex items-center border-b border-divider pb-3 mb-3">
+                                        <span class="audit-label text-muted">Assessable Value (Taxable Amount):</span>
+                                        <span class="audit-val font-mono font-medium" id="resTaxableValue">₹0.00</span>
+                                    </div>
+                                    <div class="audit-row justify-between flex items-center border-b border-divider pb-3 mb-3" id="cgstRow">
+                                        <span class="audit-label text-muted">CGST Split (Central Gov):</span>
+                                        <span class="audit-val font-mono text-muted" id="resCGST">₹0.00 <span class="tax-rate-sub" id="resCGSTRate">(0.0%)</span></span>
+                                    </div>
+                                    <div class="audit-row justify-between flex items-center border-b border-divider pb-3 mb-3" id="sgstRow">
+                                        <span class="audit-label text-muted">SGST Split (State Gov):</span>
+                                        <span class="audit-val font-mono text-muted" id="resSGST">₹0.00 <span class="tax-rate-sub" id="resSGSTRate">(0.0%)</span></span>
+                                    </div>
+                                    <div class="audit-row justify-between flex items-center border-b border-divider pb-3 mb-3 hidden" id="igstRow">
+                                        <span class="audit-label text-muted">IGST Split (Interstate Combined):</span>
+                                        <span class="audit-val font-mono text-muted" id="resIGST">₹0.00 <span class="tax-rate-sub" id="resIGSTRate">(0.0%)</span></span>
+                                    </div>
+                                    <div class="audit-row justify-between flex items-center border-b border-divider pb-3 mb-3 font-semibold text-accent">
+                                        <span class="audit-label">Total G.S.T Amount:</span>
+                                        <span class="audit-val font-mono" id="resGstAmount">₹0.00</span>
+                                    </div>
+                                    <div class="audit-row justify-between flex items-center pt-3 font-display font-bold text-xl">
+                                        <span class="audit-label text-primary">Invoice Grand Total:</span>
+                                        <span class="audit-val font-mono text-accent" id="resGrandTotal">₹0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="invoice-visual-footer text-xs text-muted-foreground bg-primary-10 border border-divider p-3 rounded-lg flex items-center gap-2">
+                                <i data-lucide="shield-check" class="text-emerald-500 shrink-0"></i>
+                                <span>Verified by Government Tax Calculations. Values are computed dynamically using SaaS compliance formulas.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  HISTORY SCREEN -->
+                <section id="page-history" class="page-section">
+                    <div class="history-grid max-w-full">
+                        <!--  Calculator History -->
+                        <div class="glass card-padding flex flex-col h-[650px]">
+                            <div class="history-section-header flex justify-between items-center mb-4 border-b border-divider pb-3">
+                                <div>
+                                    <h3 class="panel-title font-display flex items-center gap-2">
+                                        <i data-lucide="calculator" class="text-blue-500"></i>
+                                        Standard Ledger Logs
+                                    </h3>
+                                    <p class="panel-sub text-xs">Permanent records of expressions, operators, and decimal results.</p>
+                                </div>
+                                <button class="bttn bttn-sm bttn-danger gap-1" id="btnPageClearCalcHistory">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="history-table-wrapper flex-1 overflow-y-auto pr-1" id="historyTableCalcContainer">
+                                <table class="history-table w-full text-left">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>Expression Formula</th>
+                                            <th class="text-right">Evaluation Result</th>
+                                            <th class="text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historyTableCalcBody">
+                                        <!-- Populated  script -->
+                                    </tbody>
+                                </table>
+                                <div class="empty-state p-8 text-center" id="historyCalcEmpty">
+                                    <i data-lucide="calculator" class="empty-icon text-muted block mx-auto mb-2"></i>
+                                    <p class="text-muted text-sm">No calculator records filed. Perform a calculation to begin!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  GST Calculations History -->
+                        <div class="glass card-padding flex flex-col h-[650px]">
+                            <div class="history-section-header flex justify-between items-center mb-4 border-b border-divider pb-3">
+                                <div>
+                                    <h3 class="panel-title font-display flex items-center gap-2">
+                                        <i data-lucide="percent" class="text-green-500"></i>
+                                        Government GST Ledger Logs
+                                    </h3>
+                                    <p class="panel-sub text-xs">Permanent records of tax assessments, taxable values, CGST/SGST/IGST codes.</p>
+                                </div>
+                                <button class="bttn bttn-sm bttn-danger gap-1" id="btnPageClearGstHistory">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="history-table-wrapper flex-1 overflow-y-auto pr-1" id="historyTableGstContainer">
+                                <table class="history-table w-full text-left">
+                                    <thead>
+                                        <tr>
+                                            <th>Date & Time</th>
+                                            <th>Base / Rate</th>
+                                            <th>Tax Type</th>
+                                            <th class="text-right">Tax Amount</th>
+                                            <th class="text-right">Grand Total</th>
+                                            <th class="text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historyTableGstBody">
+                                        <!-- Populated script -->
+                                    </tbody>
+                                </table>
+                                <div class="empty-state p-8 text-center" id="historyGstEmpty">
+                                    <i data-lucide="percent" class="empty-icon text-muted block mx-auto mb-2"></i>
+                                    <p class="text-muted text-sm">No GST transaction invoice tax audits filed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  SETTINGS PAGE  -->
+                <section id="page-settings" class="page-section">
+                    <div class="settings-layout max-w-2xl mx-auto flex flex-col gap-6">
+                        
+                        <!-- Theme Settings Card -->
+                        <div class="glass card-padding">
+                            <h3 class="panel-title font-display flex items-center gap-2 mb-2">
+                                <i data-lucide="palette" class="text-accent"></i>
+                                Custom Premium Theme Palette
+                            </h3>
+                            <p class="panel-sub mb-4">Switch the visual identity of Business Calculator Pro. Your setting is persisted automatically in local storage.</p>
+                            
+                            <div class="theme-picker-grid">
+                                <button class="theme-select-card text-left p-4 rounded-xl border border-divider cursor-pointer transition-all flex flex-col gap-2 relative bg-white text-slate-800" id="themePickLight">
+                                    <div class="visual-badge flex gap-1">
+                                        <span class="w-4 h-4 rounded-full bg-slate-100 border border-slate-300"></span>
+                                        <span class="w-4 h-4 rounded-full bg-blue-600"></span>
+                                        <span class="w-4 h-4 rounded-full bg-emerald-500"></span>
+                                    </div>
+                                    <div>
+                                        <span class="theme-name font-semibold block">SaaS Minimal Light</span>
+                                        <span class="theme-description text-muted-foreground text-xs block">Default premium off-white, calm, and readable workspace layout.</span>
+                                    </div>
+                                    <div class="select-indicator absolute top-3 right-3 text-accent hidden-icon" id="indicatorLight">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-blue-600"></i>
+                                    </div>
+                                </button>
+
+                                <button class="theme-select-card text-left p-4 rounded-xl border border-divider cursor-pointer transition-all flex flex-col gap-2 relative bg-slate-950 text-slate-100" id="themePickDark">
+                                    <div class="visual-badge flex gap-1">
+                                        <span class="w-4 h-4 rounded-full bg-slate-900 border border-slate-700"></span>
+                                        <span class="w-4 h-4 rounded-full bg-blue-500"></span>
+                                        <span class="w-4 h-4 rounded-full bg-emerald-400"></span>
+                                    </div>
+                                    <div>
+                                        <span class="theme-name font-semibold block">Royal Cosmic Dark</span>
+                                        <span class="theme-description text-slate-400 text-xs block">Premium high-contrast deep twilight theme for long calculation sprints.</span>
+                                    </div>
+                                    <div class="select-indicator absolute top-3 right-3 text-accent hidden-icon" id="indicatorDark">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Database Administration Card -->
+                        <div class="glass card-padding">
+                            <h3 class="panel-title font-display flex items-center gap-2 mb-2 text-rose-500">
+                                <i data-lucide="database-backup"></i>
+                                Database Administration
+                            </h3>
+                            <p class="panel-sub mb-4">Perform catastrophic data maintenance. These commands will permanently clear all histories stored on the remote SQLite server database.</p>
+                            
+                            <div class="flex flex-col gap-3">
+                                <div class="admin-action-row justify-between flex items-center p-3 border border-divider rounded-xl">
+                                    <div>
+                                        <span class="action-label font-semibold block">Clear Standard Ledger History</span>
+                                        <span class="action-caption text-muted text-xs block">Wipe calculations expressions but retain GST ledger documents.</span>
+                                    </div>
+                                    <button class="bttn bttn-sm bttn-danger" id="btnClearCalculationsAdmin">
+                                        Wipe Formulas
+                                    </button>
+                                </div>
+
+                                <div class="admin-action-row justify-between flex items-center p-3 border border-divider rounded-xl mt-3">
+                                    <div>
+                                        <span class="action-label font-semibold block">Clear Government GST Historics</span>
+                                        <span class="action-caption text-muted text-xs block">Purge invoice ledgers, compliance entries and saved rates.</span>
+                                    </div>
+                                    <button class="bttn bttn-sm bttn-danger" id="btnClearGstAdmin">
+                                        Wipe Invoices
+                                    </button>
+                                </div>
+
+                                <div class="admin-action-row justify-between flex items-center p-3 border border-red-200 bg-red-50/10 rounded-xl mt-3">
+                                    <div>
+                                        <span class="action-label font-semibold block text-rose-600">Full System Wipe</span>
+                                        <span class="action-caption text-muted text-xs block">Resets all tables, counts, dashboard cache metrics & stats instantly.</span>
+                                    </div>
+                                    <button class="bttn bttn-danger" id="btnFullWipeAdmin">
+                                        Hard Purge All
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Information Card -->
+                        <div class="glass card-padding">
+                            <h3 class="panel-title font-display flex items-center gap-2 mb-3">
+                                <i data-lucide="info" class="text-blue-500"></i>
+                                App Information & Compliance
+                            </h3>
+                            <div class="text-xs text-muted-foreground flex flex-col gap-2">
+                                <div class="flex justify-between">
+                                    <span>Product Name:</span>
+                                    <span class="font-semibold text-primary">Business Calculator Pro</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Version Status:</span>
+                                    <span class="font-mono">v1.2.4 (Enterprise Edition)</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Server Architecture:</span>
+                                    <span class="font-mono">FastAPI API Core</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Local Storage Registry:</span>
+                                    <span class="font-mono">SQLite + SQLAlchemy ORM</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Developer Node Frame:</span>
+                                    <span class="font-mono">Nginx Proxy Core 3000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+
+    <!-- Script triggers -->
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/calculator.js"></script>
+    <script src="/assets/js/gst.js"></script>
+    <script src="/assets/js/history.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/app.js"></script>
+</body>
+</html>
